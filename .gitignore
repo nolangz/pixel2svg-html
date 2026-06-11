@@ -1,0 +1,33 @@
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Per-logo generated deliverables and QA artifacts
+outputs/
+fit_work/
+*.log
+*.tmp
+*.bak
+
+# Common generated logo artifacts
+logo.svg
+logo.html
+logo_static.html
+logo_motion.html
+final_render.png
+html_render.png
+overlay_progress_strip.png
+bezier_segments.svg
+bezier_audit.json
+fit_metrics.json
+
