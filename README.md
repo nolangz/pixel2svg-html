@@ -1,12 +1,33 @@
 # Pixel2SVG-HTML
 
-Pixel2SVG-HTML is a Codex skill for converting raster logos into clean, smooth, editable SVG and standalone JavaScript-rendered HTML.
+**Raster logo → clean, smooth, minimal-complexity SVG → standalone JS-rendered HTML.**
 
-The skill is built for logo reconstruction work where vector craft matters more than blind pixel tracing. It favors the lowest-complexity geometry that passes visual QA, uses overlay evidence for each fitting iteration, and treats smooth edges as a hard quality gate. IoU is measured and optimized, but it is not used as a fixed global pass/fail threshold.
+[Skill instructions](SKILL.md) · [Companion skill: Pixel2Motion](https://github.com/nolanlai/pixel2motion)
 
-Use this repository when the request is static logo vectorization. If the request includes logo animation, motion studies, replay controls, timeline tuning, or animated showcase HTML, use the companion `pixel2motion` skill instead.
+Pixel2SVG-HTML is a Codex skill for converting raster logos (PNG/JPG/WebP/screenshots) into clean, smooth, editable SVG and standalone JavaScript-rendered HTML.
 
-## What It Produces
+The skill is built for logo reconstruction work where vector craft matters more than blind pixel tracing. It favors the lowest-complexity geometry that passes visual QA, records overlay evidence for every fitting iteration, and treats edge smoothness as a hard quality gate. IoU is measured and optimized as high as practical, but it is never used as a fixed global pass/fail threshold.
+
+This repository covers static logo vectorization. If the request includes logo animation, motion studies, replay controls, timeline tuning, or an animated showcase HTML, use the companion [Pixel2Motion](https://github.com/nolanlai/pixel2motion) skill instead.
+
+## Fitting Process
+
+CueRecord fitting evidence, read left to right:
+
+![CueRecord overlay progress strip](docs/process/cuerecord-overlay-progress-strip.png)
+
+The teal overlays are QA checkpoints, not the deliverable. They show how the vector candidate is repeatedly compared against the raster source throughout fitting.
+
+| Stage | What It Checks | Why It Matters |
+| --- | --- | --- |
+| Source raster | Mark shape, dot placement, wordmark baseline, spacing, and ink weight. | The reconstruction can only be credible if the static target is measured faithfully first. |
+| Early overlay | Coarse vector geometry over the source image. | Misalignment is visible immediately: mark scale, wordmark width, dot position, and baseline drift. |
+| Refinement overlays | Local geometry corrections while keeping the shape smooth. | The skill improves fit without falling back to noisy pixel-grid tracing. |
+| Final vector | Clean semantic SVG: mark, dot, and wordmark as separate addressable parts. | This is the editable deliverable — and, downstream, the final-frame contract for Pixel2Motion. |
+
+Pixel2SVG-HTML optimizes IoU as a diagnostic, but smoothness and structure are the hard gates. A high-IoU jagged trace is rejected when a lower-complexity smooth vector explains the logo better.
+
+## Deliverables
 
 - `logo.svg`: semantic, editable SVG with stable ids per visual part
 - `logo.html`: dependency-free HTML that rebuilds the SVG through JavaScript DOM calls
@@ -15,33 +36,7 @@ Use this repository when the request is static logo vectorization. If the reques
 - `outputs/overlay_progress_strip.png`: source-to-final QA strip
 - `outputs/fit_work/`: resumable fitting state and iteration data
 
-## Repository Contents
-
-- `SKILL.md`: Codex-facing workflow and acceptance criteria
-- `agents/openai.yaml`: UI metadata for the skill
-- `references/`: fitting playbooks and specialized ribbon/wordmark guidance
-- `scripts/`: deterministic helpers for tracing, rendering, overlays, path audits, ribbon fitting, and HTML generation
-
-## Requirements
-
-- Python 3.10+
-- `Pillow` and `numpy` for image analysis helpers
-- Chrome or Chromium for headless SVG/HTML rendering
-
-Recommended local setup:
-
-```bash
-python3 -m venv .venv
-.venv/bin/pip install pillow numpy
-```
-
-If Chrome is not on the default path, set `CHROME_BIN` before running render checks:
-
-```bash
-export CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-```
-
-## Basic Workflow
+## Workflow
 
 1. Read `SKILL.md` and the relevant reference file before fitting.
 2. Measure the source image and choose the simplest plausible geometry.
@@ -79,9 +74,36 @@ python3 scripts/overlay_progress_strip.py \
   --out outputs/overlay_progress_strip.png
 ```
 
-## GitHub Upload Checklist
+## Requirements
 
-- Confirm `SKILL.md`, `agents/openai.yaml`, `references/`, and `scripts/` are committed.
+- Python 3.10+
+- `Pillow` and `numpy` for image analysis helpers
+- Chrome or Chromium for headless SVG/HTML rendering
+
+Recommended local setup:
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install pillow numpy
+```
+
+If Chrome is not on the default path, set `CHROME_BIN` before running render checks:
+
+```bash
+export CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+```
+
+## Repository Layout
+
+- `SKILL.md`: Codex-facing workflow and acceptance criteria
+- `agents/openai.yaml`: UI metadata for the skill
+- `references/`: fitting playbooks and specialized ribbon/wordmark guidance
+- `scripts/`: deterministic helpers for tracing, rendering, overlays, path audits, ribbon fitting, and HTML generation
+- `docs/`: fitting-process evidence and README assets
+
+## Publishing Checklist
+
+- Confirm `SKILL.md`, `agents/openai.yaml`, `references/`, `scripts/`, and `docs/` are committed.
 - Keep generated deliverables, local virtual environments, caches, and per-logo `outputs/` out of git.
 - Add a `LICENSE` file before publishing if this repository should grant reuse rights.
 - After creating the GitHub repository, add the remote and push:
@@ -92,3 +114,22 @@ git branch -M main
 git push -u origin main
 ```
 
+## More From Nolanlai
+
+<p align="center">
+  <a href="https://www.nolanlai.com">
+    <img src="docs/community/nolanlai-creative-tools.png" width="520" alt="Nolanlai's Creative Tools">
+  </a>
+  <br>
+  <a href="https://www.nolanlai.com"><strong>www.nolanlai.com</strong></a>
+  <br>
+  More creative tools, experiments, and notes from Nolanlai.
+</p>
+
+<p align="center">
+  <img src="docs/community/vibe-creators-wechat-qr.jpg" width="360" alt="Vibe-Creators WeChat group QR code">
+  <br>
+  <strong>Vibe-Creators 交流</strong>
+  <br>
+  Scan the QR code to join the creator community.
+</p>
