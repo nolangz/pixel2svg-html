@@ -1,8 +1,22 @@
+<p align="center">
+  <a href="https://www.pixel2motion.com">
+    <img src="docs/community/pixel2motion-commercial-preview.png" width="560" alt="Pixel2Motion commercial service preview">
+  </a>
+  <br>
+  <strong><a href="https://www.pixel2motion.com">www.pixel2motion.com</a></strong>
+  <br>
+  Better commercial Pixel2Motion services are coming online: polished logo-to-motion workflows, project-ready previews, and production support beyond the open-source skills.
+  <br>
+  中文：更完整的 Pixel2Motion 商业服务正在上线，面向更稳定的 logo-to-motion 交付、预览和项目支持。
+</p>
+
+---
+
 # Pixel2SVG-HTML
 
 **Raster logo → clean, smooth, minimal-complexity SVG → standalone JS-rendered HTML.**
 
-[Skill instructions](https://github.com/nolangz/pixel2svg-html/blob/main/SKILL.md) · [Companion skill: Pixel2Motion](https://github.com/nolangz/pixel2motion)
+[Commercial preview](https://www.pixel2motion.com) · [Skill instructions](https://github.com/nolangz/pixel2svg-html/blob/main/SKILL.md) · [Companion skill: Pixel2Motion](https://github.com/nolangz/pixel2motion)
 
 Pixel2SVG-HTML is a Codex skill for converting raster logos (PNG/JPG/WebP/screenshots) into clean, smooth, editable SVG and standalone JavaScript-rendered HTML.
 
